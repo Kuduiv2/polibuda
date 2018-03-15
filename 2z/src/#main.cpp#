@@ -1,0 +1,93 @@
+#include <iostream>
+#include "BazaTestu.hh"
+
+using namespace std;
+
+
+
+
+int main(int argc, char **argv)
+{
+  LZespolona Wynik, Odpowiedz;
+  int tmp,sukces=0,podejscia=0;
+  if (argc < 2) {
+    cout << endl;
+    cout << " Brak opcji okreslajacej rodzaj testu." << endl;
+    cout << " Dopuszczalne nazwy to:  latwy, trudny." << endl;
+    cout << endl;
+    return 1;
+  }
+
+
+  BazaTestu   BazaT = { nullptr, 0, 0 };
+
+  if (InicjalizujTest(&BazaT,argv[1]) == false) {
+    cerr << " Inicjalizacja testu nie powiodla sie." << endl;
+    return 1;
+  }
+
+
+  
+  cout << endl;
+  cout << " Start testu arytmetyki zespolonej: " << argv[1] << endl;
+  cout << " standardowy format odpowiedzi ( L1 L2 i ) gdzie Ln ma postać [+/-]double " << endl;
+  cout << endl;
+
+  WyrazenieZesp   WyrZ_PytanieTestowe;
+  
+  while (PobierzNastpnePytanie(&BazaT,&WyrZ_PytanieTestowe)) {
+    // cout << " Czesc rzeczywista pierwszego argumentu: ";            //zbędne
+
+    tmp=3;
+    cout << WyrZ_PytanieTestowe << endl;
+    Wynik = Oblicz(WyrZ_PytanieTestowe);
+    cout << Wynik << endl;
+    while (tmp!=0){
+    podejscia++;
+    cin >> Odpowiedz;
+    if (Odpowiedz==Wynik){
+      cout<<"poprawna odpowiedź"<<endl;
+      tmp=0;
+      sukces++;}
+    else {cout<<"niepoprawna odpowiedź pozostało: "<< --tmp<<" podejść "<<endl;}
+    }
+  }
+  
+  cout << endl;
+  cout << " Koniec testu" << endl;
+  cout << "wynik to ["<< sukces << "/"<< podejscia <<"] [liczba sukcesów / ilość podejść]" << endl;
+  cout << " Ilość błędnych odpowiedzi:"<< podejscia - sukces << endl;
+  
+  cout << endl;
+
+}
+/*
+
+
+int main()
+{
+  WyrazenieZesp  WyrZ;
+  WyrZ.Op = Op_Dodaj;
+  LZespolona Z1,Z2,Z3;
+  std::cin >> Z1;
+  //Z1.re=4;
+  //Z1.im=5;
+  Z2.re=2;
+  Z2.im=1;
+  Z3.re=0;
+  Z3.im=3;
+  std::cout<<WyrZ.Op<<endl;
+  wyswietl (Z1 + Z2 );
+  std::cout <<endl;
+  wyswietl (Z2 - Z3 );
+  std::cout <<endl;
+  wyswietl (Z1 * Z3 );
+  std::cout <<endl;
+  wyswietl (Z1 / Z2 );
+  std::cout <<endl;
+
+  
+  
+  return 0;
+}
+*/
